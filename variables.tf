@@ -50,3 +50,11 @@ variable "dns_prefix_name" {
     default = "test"
     description = "DNS prefix of hostname for Azure Kubernetes Service (AKS)"
 }
+variable "pgserver_username" {
+    default = "psqladmin"
+    description = "Postgres server username"
+}
+variable "pgserver_password" {
+    description = "Please enter Postgres server password"
+    sensitive = true
+}
