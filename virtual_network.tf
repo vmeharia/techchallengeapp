@@ -12,6 +12,7 @@ resource "azurerm_subnet" "snet" {
   virtual_network_name = azurerm_virtual_network.vnet.name
   resource_group_name  = azurerm_resource_group.rg.name
   address_prefixes     = [var.subnet_prefix]
+  service_endpoints    = ["Microsoft.Sql"]
 }
 
 # Create virtual network rule for postgres

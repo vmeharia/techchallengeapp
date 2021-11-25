@@ -1,3 +1,4 @@
+# Create postgres server
 resource "azurerm_postgresql_server" "pg_server" {
   name                          = "test-pgserver"
   location                      = azurerm_resource_group.rg.location
@@ -14,6 +15,7 @@ resource "azurerm_postgresql_server" "pg_server" {
   ssl_enforcement_enabled       = false
 }
 
+# Create postgres database
 resource "azurerm_postgresql_database" "pg_db" {
   name                = "test-pgdb"
   resource_group_name = azurerm_resource_group.rg.name
