@@ -1,4 +1,4 @@
-# techchallengeapp
+### Techchallengeapp
 # Deploy techchallengeapp on Azure platform using terraform
 
 ## Usage
@@ -31,3 +31,17 @@ note : it will prompt to key in postgres server password, please use a complex 8
 
 Output : Public IP to access the page
 ```
+## Technology Used for the deployment
+The technologies used for deployment are:
+1) Microsoft Azure
+2) Hashicorp Terraform
+3) Kubernetes
+4) Docker
+
+## Approach
+I have used below approach to complete the solution.
+1) Terraform as infra as code to deploy all the components.
+2) Postgres server and database to be used as backend to store data.
+3) An Azure Kubernetes service to host the application inside a pod.
+4) A Kubernetes job to seed the data.
+5) A Kubernetest deployment to deploy the application.
