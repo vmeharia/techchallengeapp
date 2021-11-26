@@ -55,6 +55,20 @@ variable "pgserver_username" {
     description = "Postgres server username"
 }
 variable "pgserver_password" {
-    description = "Please enter Postgres server password"
+    description = "Please enter Postgres server password(for example : H@Sh1CoR3!)"
     sensitive = true
+}
+
+variable "pgserver_name" {
+  default = "test-pgserver"
+  description = "Name of postgres server"
+}
+variable "pgdb_name" {
+  default = "test-pgdb"
+  description = "Name of postgres database"
+}
+
+variable "port" {
+  default = "80"
+  description = "variable used for port 80 in multiple places"
 }

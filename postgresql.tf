@@ -1,6 +1,6 @@
 # Create postgres server
 resource "azurerm_postgresql_server" "pg_server" {
-  name                          = "test-pgserver"
+  name                          = var.pgserver_name
   location                      = azurerm_resource_group.rg.location
   resource_group_name           = azurerm_resource_group.rg.name
   administrator_login           = var.pgserver_username
@@ -17,7 +17,7 @@ resource "azurerm_postgresql_server" "pg_server" {
 
 # Create postgres database
 resource "azurerm_postgresql_database" "pg_db" {
-  name                = "test-pgdb"
+  name                = var.pgdb_name
   resource_group_name = azurerm_resource_group.rg.name
   server_name         = azurerm_postgresql_server.pg_server.name
   charset             = "UTF8"

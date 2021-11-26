@@ -22,7 +22,6 @@ resource "kubernetes_job" "job" {
           args  = ["updatedb", "-s"]
           env {
             name = "VTT_DBUSER"
-            # Database users must be in the username@host format, at least for Azure-based PostgreSQL servers.
             value = "${azurerm_postgresql_server.pg_server.administrator_login}@${azurerm_postgresql_server.pg_server.name}"
           }
           env {
@@ -47,7 +46,7 @@ resource "kubernetes_job" "job" {
           }
           env {
             name  = "VTT_LISTENPORT"
-            value = "80"
+            value = var.port
           }
         }
         restart_policy = "Never"
@@ -89,7 +88,6 @@ resource "kubernetes_deployment" "deploy" {
 
           env {
             name = "VTT_DBUSER"
-            # Database users must be in the username@host format, for Azure-based PostgreSQL servers.
             value = "${azurerm_postgresql_server.pg_server.administrator_login}@${azurerm_postgresql_server.pg_server.name}"
           }
           env {
@@ -114,10 +112,10 @@ resource "kubernetes_deployment" "deploy" {
           }
           env {
             name  = "VTT_LISTENPORT"
-            value = "80"
+            value = var.port
           }
           port {
-            container_port = 80
+            container_port = var.port
           }
         }
       }
