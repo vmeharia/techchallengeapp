@@ -2,7 +2,7 @@
 Hi, all the code for this solution can be found ***[here][git-repo-url]***
 ## Usage
 
-Below are steps for followed to deploy the application
+Below are steps to be followed for deploying the application
 
 ### Clone this repo
 ```sh
@@ -25,19 +25,19 @@ Connect-AzAccount
 terraform init
 
 terraform plan
-note : it will prompt to key in postgres server password, please use a complex 8 to 10 charater long password with atleast one special charcter
+note : it will prompt to key in postgres server password, please use a complex 8 to 10 character long password with atleast one special character
 
 terraform apply --auto-approve
-note : it will prompt to key in postgres server password, please use a complex 8 to 10 charater long password with atleast one special charcter
+note : it will prompt to key in postgres server password, please use a complex 8 to 10 character long password with atleast one special character
 
 Output : Public IP to access the page
 ```
 ## Destroy the solution
-To destroy the solution to save the cost use below.
+For destroying the solution and to save the cost use below.
 
 ```sh
 terraform destory --auto-approve
-note : it will prompt to key in postgres server password, please use a complex 8 to 10 charater long password with atleast one special charcter
+note : it will prompt to key in postgres server password, please use a complex 8 to 10 character long password with atleast one special character
 ```
 
 ## Technology Used for the deployment
@@ -53,22 +53,31 @@ I have used below approach to complete the solution.
 2) Postgres server and database to be used as backend to store data.
 3) An Azure Kubernetes service to host the application inside a pod.
 4) A Kubernetes job to seed the data.
-5) A Kubernetest deployment to deploy the application.
+5) A Kubernetes deployment to deploy the application.
+6) A Kubernetes service to expose the deployment to internet.
+7) A Kubernetes horizontal pod autoscaler for autoscalling of pods based on CPU.
 
 ## Explanation
-First of all i really love deploying this solution it was challenging and i really learned lot of new things while building this solution and i thank servian team for giving this opportunity.
-I started with building basic infra components like rg, vnet and AKS and the later added postgres server and database.
-While building postgres it was not allowing to build in many regions as i am using MSDN Subscription after a bit of research i was able to deploy in "eastus" Reference ***[here][msdn-restric]***. Once i have all the components ready i did a manual deployment using kubectl to check whether application is working with my solution, in manual deployment i use yaml file with both (updatedb -s & serve) as argument and it worked fine. but when i tried to mitigate the same with kubernetes deployment it seeded the data meaning (updatedb -s) completed but (serve) was not working. After researching for few hours i found about kubernetes jobs which can be use to run any job and pod will be in completed state after job is completed. I use kubernetes job to seed the data to postgres database, and kubernetes deployment with args (serve) for application deployment and process all user requests. Then i use kubernetes service to expose the deployment to internet and get the public IP to acess the applicaiton page.
+*I started with building basic infra components like rg, vnet and AKS and later added postgres server and database.
 
-I have included comment as and where neccessary and also try to use variable in most of the places.
-For making the code secure and password less, when terraform is intiated it will prompt for a postgres server password and internally it will call in various location and never revel the password.
-I tried to make the code as simple as possible and didn't overengineered the solution.
-For resiliency and high availability i have enabled autoscalling on the pods where application are run with a metric of CPU more than 70%. On postgres as i am using Azure Database for PostgreSQL it high availability inbuild (ref: ***[here][postgres-azure-url]***). We can also try using Azure Database for PostgreSQL Flexible Server which gives more option for high availability but as it is in preview i haven't used in my solution.
+*While building postgres it was not allowing to build in many regions as I am using MSDN Subscription, after a bit of research I was able to deploy in "EAST US" region ***[here][msdn-restrict]***.
 
-I have attached graph.svg with a graphical representation of the solution.
+*Once I had all the components ready I did a manual deployment using kubectl to check whether application is working with my solution or not. In manual deployment I use yaml file with both 'updatedb -s & serve' as argument and it worked fine. But when I tried to mitigate the same with kubernetes deployment, it seeded the data i.e. 'updatedb -s' completed but 'serve' was not working. 
+
+*After researching for few hours, I found about kubernetes jobs which can be used to run any job. I used kubernetes job to seed the data to postgres database, and kubernetes deployment with args 'serve' for application deployment and process all user requests. 
+
+*Then I used kubernetes service to expose the deployment to internet and get the public IP to acess the application page.
+
+*I have included comment as and where neccessary and also tried to use variable in most of the places.
+ For making the code secure and password less, when terraform is intiated it will prompt for a postgres server password and internally it will call in various location and never reveal the password.
+
+*I tried to make the code as simple as possible and didn't overengineered the solution.
+ For resiliency and high availability I have enabled autoscaling on the pods where application is running with a metric of CPU more than 70%. On postgres side as I am using Azure Database for PostgreSQL, high availability is already inbuilt (ref: ***[here][postgres-azure-url]***). We can also try using Azure Database for PostgreSQL Flexible Server which gives more option for high availability, but as it is in public preview I haven't used in my solution.
+
+*I have attached graph.svg with a graphical representation of the solution.
 
 ## Technical Challenge
-The only challenge i faced while building this solution is i used to only build infra using the terraform for example in my current projects i have used terraform infra as code to build to build around 46 resources in less than 15 mins, but with this solution i was suppose to do the deployment too which we used to do manually using kubectl, helm etc. Now after deployment of this solution i am confident to intergrate kubernetes deployment in terraform code for other project.
+The only challenge I faced while building this solution was, I used to build infra using terraform for example in my current projects I have used terraform infra as code to build around 46 resources in less than 15 mins, but with this solution I was supposed to do the deployment too which we used to do manually using kubectl, helm etc. Now after deployment of this solution I am confident to intergrate kubernetes deployment in terraform code from end to end.
 
 [git-repo-url]: https://github.com/vmeharia/techchallengeapp
 [postgres-azure-url]: https://docs.microsoft.com/en-us/azure/postgresql/concepts-high-availability
