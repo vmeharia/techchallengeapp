@@ -8,9 +8,9 @@ resource "kubernetes_job" "job" {
       metadata {}
       spec {
         container {
-          image   = "servian/techchallengeapp:latest"
+          image   = "servian/techchallengeapp:latest" # Images is pulled from docker hub
           name    = "techchallengeapp"
-          command = ["./TechChallengeApp"]
+          command = ["./TechChallengeApp"] # Though this is not required, added just in case
           args  = ["updatedb", "-s"]
           env {
             name = "VTT_DBUSER"
@@ -67,7 +67,7 @@ resource "kubernetes_deployment" "deploy" {
     ]
   }
   spec {
-    replicas = 2
+    replicas = 1
     selector {
       match_labels = {
         App = "techchallengeapp"
@@ -81,9 +81,9 @@ resource "kubernetes_deployment" "deploy" {
       }
       spec {
         container {
-          image   = "servian/techchallengeapp:latest"
+          image   = "servian/techchallengeapp:latest" # Images is pulled from docker hub
           name    = "techchallengeapp"
-          command = ["./TechChallengeApp"]
+          command = ["./TechChallengeApp"]   # Though this is not required, added just in case
           args  = ["serve"]
 
           env {
