@@ -1,11 +1,3 @@
-# Kubernetes Provider for getting all credentials
-provider "kubernetes" {
-  host = azurerm_kubernetes_cluster.aks.kube_config.0.host
-
-  client_certificate     = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.client_certificate)
-  client_key             = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.client_key)
-  cluster_ca_certificate = base64decode(azurerm_kubernetes_cluster.aks.kube_config.0.cluster_ca_certificate)
-}
 # Kubernetes job to seed the data
 resource "kubernetes_job" "job" {
   metadata {
@@ -124,4 +116,27 @@ resource "kubernetes_deployment" "deploy" {
     depends_on = [
     kubernetes_job.job
   ]
+}
+
+# Kubernetes service for the application access
+resource "kubernetes_service" "svc" {
+  metadata {
+    name = "techchallengeapp"
+  }
+  spec {
+    selector = {
+      App = kubernetes_deployment.deploy.spec.0.template.0.metadata[0].labels.App
+    }
+    port {
+      port        = var.port
+      target_port = var.port
+    }
+
+    type = "LoadBalancer"
+  }
+}
+
+# Output IP to access the application
+output "Application_Access_IP" {
+  value = kubernetes_service.svc.status.0.load_balancer.0.ingress.0.ip
 }
