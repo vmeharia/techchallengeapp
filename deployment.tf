@@ -86,6 +86,16 @@ resource "kubernetes_deployment" "deploy" {
           command = ["./TechChallengeApp"]   # Though this is not required, added just in case
           args  = ["serve"]
 
+        resources {
+          limits = {
+            cpu    = "0.5"
+            memory = "512Mi"
+          }
+          requests = {
+            cpu    = "250m"
+            memory = "50Mi"
+          }
+          }
           env {
             name = "VTT_DBUSER"
             value = "${azurerm_postgresql_server.pg_server.administrator_login}@${azurerm_postgresql_server.pg_server.name}"
