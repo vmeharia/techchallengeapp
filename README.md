@@ -36,7 +36,7 @@ Output : Public IP to access the page
 For destroying the solution and to save the cost use below.
 
 ```sh
-terraform destory --auto-approve
+terraform destroy --auto-approve
 note : it will prompt to key in postgres server password, please use a complex 8 to 10 character long password with atleast one special character
 ```
 
